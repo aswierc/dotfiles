@@ -1,7 +1,7 @@
 ---
 description: MySQL query/scheme performance & safety (no app code edits)
 mode: subagent
-model: openai/gpt-5.2
+model: openai/gpt-5.1-codex
 reasoningEffort: medium
 reasoningSummary: detailed
 textVerbosity: medium
@@ -25,4 +25,3 @@ Rules:
 
 Deliverable:
 - Write findings to the Markdown file specified in the handoff (usually `20_db.md`).
-
