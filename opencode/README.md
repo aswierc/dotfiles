@@ -1,11 +1,5 @@
 # OpenCode config (dotfiles)
 
-This directory is a **sanitized, GitHub-friendly** OpenCode setup:
-- no client/project names
-- no secrets in git
-- agents in English with a clean workflow
-- optional MCP servers (disabled by default)
-
 ## Install
 
 Copy (or symlink) everything into `~/.config/opencode/`:
@@ -67,5 +61,5 @@ set +a
 
 ## Notes
 
-- MCP servers are **disabled by default** to keep startup fast and avoid timeouts.
+- MCP servers are **enabled by default**.
 - If you previously had secrets inside `opencode.json`, assume they are compromised and **rotate** them.

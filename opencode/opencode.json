@@ -13,7 +13,7 @@
   "mcp": {
     "context7": {
       "type": "remote",
-      "enabled": false,
+      "enabled": true,
       "url": "https://mcp.context7.com/mcp",
       "headers": {
         "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
@@ -21,7 +21,7 @@
     },
     "fs": {
       "type": "local",
-      "enabled": false,
+      "enabled": true,
       "command": [
         "npx",
         "-y",
@@ -31,7 +31,7 @@
     },
     "mysql_local": {
       "type": "local",
-      "enabled": false,
+      "enabled": true,
       "command": ["npx", "-y", "mysql-mcp-server"],
       "environment": {
         "MYSQL_HOST": "{env:MYSQL_HOST}",
