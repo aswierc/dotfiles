@@ -14,6 +14,11 @@ rsync -a --delete ./Projects/dotfiles/opencode/ ~/.config/opencode/
 This setup is built around the `orchestrator` agent and a repo-local plan folder:
 `./.codex/plans/<id>/`.
 
+This workflow is intentionally **gated**:
+1) `@explorer` (read-only) + `@architect` (short design)
+2) STOP
+3) Only after your explicit approval, implementation starts.
+
 1) Start OpenCode in your repo and pick the orchestrator:
 
 ```sh
@@ -27,14 +32,27 @@ opencode --agent orchestrator
 /plan-init JIRA-1234
 ```
 
-3) Fill `./.codex/plans/JIRA-1234/00_task.md` (context, goals, constraints, references).
+This creates:
+- `./.codex/plans/JIRA-1234/00_task.md` — context/goals/refs
+- `./.codex/plans/JIRA-1234/JIRA-1234_plan.md` — staged checklist (each checkbox = one commit/MR)
 
-4) Ask the orchestrator to delegate:
-- `@architect` writes architecture/DDD decisions to `10_architekt.md`
-- `@db-guardian` writes DB notes/queries to `20_db.md`
-- `@implementer` implements and updates `99_status.md`
+3) Fill `./.codex/plans/JIRA-1234/00_task.md`.
+4) Ask the orchestrator to run the initial analysis phase:
+- `@explorer` maps relevant files (read-only, minimal output)
+- `@architect` writes `10_architekt.md` (compact bullets, no ADRs)
 
-Tip: keep `00_task.md` as the source of truth and point agents only to the plan folder.
+5) Review `JIRA-1234_plan.md` and `10_architekt.md`, then approve implementation with one of:
+- `GO`
+- `APPROVE`
+- `OK IMPLEMENT`
+
+6) Start implementation (explicit command):
+
+```text
+/go-implement JIRA-1234
+```
+
+Tip: keep the plan folder as the source of truth and point agents to `./.codex/plans/JIRA-1234/`.
 
 ## Secrets / env vars
 
@@ -56,10 +74,10 @@ set +a
 
 - `opencode.json` — global config (permissions, plugins, providers/models, MCP stubs)
 - `agents/*.md` — agents (primary + subagents)
-- `commands/*.md` — reusable commands (e.g. `/plan-init`)
+- `commands/*.md` — reusable commands (e.g. `/plan-init`, `/go-implement`)
 - `templates/*` — templates used by commands (plans/handoff)
 
 ## Notes
 
-- MCP servers are **enabled by default**.
+- MCP servers are **enabled by default**. If startup is slow or MCP tools time out, disable unneeded servers in `opencode.json`.
 - If you previously had secrets inside `opencode.json`, assume they are compromised and **rotate** them.

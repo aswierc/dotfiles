@@ -32,12 +32,6 @@ ID: `<id>`
 - <question 1>
 - <question 2>
 
-## Notes for agents
-### @architect
-- Don’t edit code. Write results to `10_architekt.md`.
+## Notes
+- Keep this file the single source of truth for the plan.
 
-### @db-guardian
-- Don’t edit application code. Write results to `20_db.md`.
-
-### @implementer
-- Implement based on `10_architekt.md` and `20_db.md`. Update `99_status.md`.

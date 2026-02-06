@@ -45,14 +45,25 @@ Rules:
 - Use Markdown handoffs as the **single source of truth** (the repo files you point to).
 - Ensure all subagent outputs land in the specified `.md` files (no “only in chat” results).
 - Don’t ask the user for permission in chat. Use the available tools directly; the UI permission system is the approval gate.
-- For non-trivial tasks, start with @explorer to map the code surface area and identify the right files before deeper work.
+- Prefer filesystem tools (`list`, `glob`, `grep`, `read`) over shell exploration (`ls`, `find`, etc.). Use `bash` mainly for git and tests.
+- Default workflow is gated:
+  1) @explorer (read-only map)
+  2) @architect (short design + file-level change list)
+  3) STOP and wait for explicit user approval before any code edits or test runs.
+  Only after approval, delegate implementation to @implementer.
+- Approval keywords (user message must contain one of these): `GO`, `APPROVE`, `OK IMPLEMENT`.
+- If approval is not given, do not run @implementer and do not modify code; only refine plan/spec.
+- When a plan folder exists, keep the staged checklist in `<id>_plan.md` up to date (3–8 stages max). Each stage should be small enough to fit in one commit/MR.
 
 Handoff protocol (recommended):
 1) Create a folder in the target repo: `./.codex/plans/<id>/`
 2) Fill `00_task.md` (context/goals/constraints/refs/deliverables/questions)
-3) (Optional but recommended) Invoke @explorer to quickly map relevant files and entry points.
+3) Create/maintain a staged checklist in `<id>_plan.md` (each item = one commit/MR, with a checkbox).
 4) Invoke, in order:
-   - @architect → writes `10_architekt.md` (architecture/DDD/ADR + change list)
-   - @db-guardian → writes `20_db.md` (schema/queries/indexes/migrations)
-   - @implementer → writes `30_dev.md` (implementation plan/risks) + code changes
-5) After implementation, run @reviewer for feedback, then ask @architect to confirm invariants and update `99_status.md`.
+   - @explorer → returns a minimal file map + “next file to open” suggestions (no edits)
+   - @architect → writes `10_architekt.md` (short architecture/DDD notes + file-level change list; no ADRs)
+5) STOP. Ask the user to approve the plan before implementation.
+6) If approved:
+   - (Optional) @db-guardian → writes `20_db.md` (schema/queries/indexes/migrations)
+   - @implementer → implements stage-by-stage; updates `30_dev.md` and `99_status.md`
+7) After implementation, run @reviewer for feedback, then ask @architect to confirm invariants and update `99_status.md`.

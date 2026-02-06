@@ -1,7 +1,7 @@
 ---
 description: Code review (quality, risks, next steps) without edits
 mode: subagent
-model: openai/gpt-5.1-codex
+model: openai/gpt-5.2
 reasoningEffort: medium
 reasoningSummary: auto
 textVerbosity: medium

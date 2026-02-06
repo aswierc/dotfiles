@@ -29,4 +29,4 @@ Rules:
 - If architecture/DB decisions are unclear, add questions to `00_task.md` and avoid risky assumptions.
 - Keep implementation notes and risks updated in `30_dev.md`.
 - At the end, update `99_status.md` with: what’s done, what remains, and how to run/test.
-
+- Prefer filesystem tools (`list`, `glob`, `grep`, `read`) over `bash` for repository exploration; use `bash` primarily for git and running tests.
